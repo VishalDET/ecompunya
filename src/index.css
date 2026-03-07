@@ -1,0 +1,43 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #F15A24;
+  --color-punya-orange: #F15A24;
+  --color-punya-dark: #222222;
+  --color-background-light: #FAFAFA;
+
+  --font-display: "Montserrat", system-ui, sans-serif;
+  --font-sans: "Montserrat", system-ui, sans-serif;
+
+  --radius: 0.5rem;
+}
+
+/* Base body styles */
+body {
+  font-family: "Montserrat", system-ui, sans-serif;
+  background-color: #FAFAFA;
+  color: #1e293b;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Product card quick-add hover */
+.product-card:hover .quick-add {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Custom Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #e2e8f0;
+  border-radius: 10px;
+}

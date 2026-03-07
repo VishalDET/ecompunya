@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Punya | Exquisite Saree Collection</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Playfair+Display:ital,wght@0,400;0,700;1,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#F15A24",
+                        "background-light": "#FAFAFA",
+                        "background-dark": "#111827",
+                    },
+                    fontFamily: {
+                        display: ["Playfair Display", "serif"],
+                        sans: ["Inter", "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.5rem",
+                    },
+                },
+            },
+        };
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+        }
+    </script>
+<style>
+        .product-card:hover .quick-add {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #e2e8f0;
+            border-radius: 10px;
+        }
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #374151;
+        }
+    </style>
+</head>
+<body class="font-sans bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 transition-colors duration-300">
+<header class="sticky top-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-20">
+<div class="flex-shrink-0">
+<img alt="Punya Logo" class="h-10 w-auto" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHExIxlHciEGqqoiMbx6jU6rxNpMMfkr_zGW5TZ-AwEcVGo1Sbu_iOILZ1FmvCNCbDRpQCgBOGGIInpbwnGOwMY6CcvLqyQcrthkwXDkOoNNrD0wYWaa1h3SFM28hq-7073xQgvO6Rq5afQ06sxxV84pe70bVScSTLVfXBoknWuUzwQW4aKQDuW_pYL5X_5_nZvCaLW_860hY6rrbbuSNw5NEgR2_54dxqDxAOLRdho-y9wGPiO5CbtsfI9J-Hs6hpd0CIF05Qy_g"/>
+</div>
+<nav class="hidden md:flex space-x-8">
+<div class="group relative">
+<button class="flex items-center text-sm font-medium hover:text-primary transition-colors py-8">
+                            COLLECTIONS <span class="material-icons-outlined text-sm ml-1">expand_more</span>
+</button>
+<div class="absolute left-1/2 -translate-x-1/2 top-full w-screen max-w-4xl bg-white dark:bg-slate-800 shadow-2xl rounded-b-xl border border-slate-100 dark:border-slate-700 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 p-8 grid grid-cols-4 gap-8">
+<div>
+<h4 class="font-display text-lg font-bold mb-4 border-b pb-2">Sarees</h4>
+<ul class="space-y-2 text-sm text-slate-600 dark:text-slate-400">
+<li class="hover:text-primary cursor-pointer">Banarasi Silk</li>
+<li class="hover:text-primary cursor-pointer">Kanjeevaram</li>
+<li class="hover:text-primary cursor-pointer">Chiffon &amp; Georgette</li>
+<li class="hover:text-primary cursor-pointer">Organza</li>
+<li class="hover:text-primary cursor-pointer">Cotton &amp; Linen</li>
+</ul>
+</div>
+<div>
+<h4 class="font-display text-lg font-bold mb-4 border-b pb-2">Occasions</h4>
+<ul class="space-y-2 text-sm text-slate-600 dark:text-slate-400">
+<li class="hover:text-primary cursor-pointer">Bridal Wear</li>
+<li class="hover:text-primary cursor-pointer">Festive Collection</li>
+<li class="hover:text-primary cursor-pointer">Party Wear</li>
+<li class="hover:text-primary cursor-pointer">Daily Elegance</li>
+</ul>
+</div>
+<div>
+<h4 class="font-display text-lg font-bold mb-4 border-b pb-2">Craftmanship</h4>
+<ul class="space-y-2 text-sm text-slate-600 dark:text-slate-400">
+<li class="hover:text-primary cursor-pointer">Hand Block Print</li>
+<li class="hover:text-primary cursor-pointer">Zardosi Work</li>
+<li class="hover:text-primary cursor-pointer">Chikankari</li>
+<li class="hover:text-primary cursor-pointer">Ajrakh</li>
+</ul>
+</div>
+<div class="bg-primary/5 rounded-lg p-4">
+<img alt="Featured Saree" class="rounded-lg mb-4 h-32 w-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZpdYJKJAiNgJfso7Zlp-n6fxcdiypFc2AMJ04lDE192Adq52DaJcY0-30vIqLxRtfk9x-KWE5lG26OE6WZkeho4KOA0dEKryPJavV_WfL3r3StDxoKwLkjcIXkprnkWjVmiXUYnTbnD_sGrvXLVT0103wr7xirLYcy8zPqOcvO9fTn341K68EFi3HFl5Iu6pM95oM3rrRpLwiS9qokbhvnDKsGySvRHpm8TBSEDNQ68RobJFcVGom0Md_xtp8utsdhtkMhQYpNxk"/>
+<p class="text-xs font-bold text-primary mb-1">NEW ARRIVAL</p>
+<p class="text-sm font-medium">The Heritage Silk Series</p>
+</div>
+</div>
+</div>
+<a class="text-sm font-medium hover:text-primary transition-colors py-8" href="#">NEW IN</a>
+<a class="text-sm font-medium hover:text-primary transition-colors py-8" href="#">WEDDING STORE</a>
+<a class="text-sm font-medium hover:text-primary transition-colors py-8" href="#">LUXE</a>
+</nav>
+<div class="flex items-center space-x-5">
+<div class="relative hidden sm:block">
+<input class="w-48 lg:w-64 pl-10 pr-4 py-2 text-sm rounded-full bg-slate-100 dark:bg-slate-800 border-none focus:ring-2 focus:ring-primary transition-all" placeholder="Search sarees..." type="text"/>
+<span class="material-icons-outlined absolute left-3 top-2 text-slate-400 text-lg">search</span>
+</div>
+<button class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors" onclick="toggleDarkMode()">
+<span class="material-icons-outlined text-xl">dark_mode</span>
+</button>
+<button class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors relative">
+<span class="material-icons-outlined text-xl">favorite_border</span>
+</button>
+<button class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors relative">
+<span class="material-icons-outlined text-xl">shopping_bag</span>
+<span class="absolute top-1 right-1 h-4 w-4 bg-primary text-white text-[10px] flex items-center justify-center rounded-full">2</span>
+</button>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<nav class="flex text-sm text-slate-500 dark:text-slate-400 mb-8 items-center space-x-2">
+<a class="hover:text-primary" href="#">Home</a>
+<span class="material-icons-outlined text-xs">chevron_right</span>
+<a class="hover:text-primary" href="#">Women</a>
+<span class="material-icons-outlined text-xs">chevron_right</span>
+<span class="text-slate-900 dark:text-white font-medium">Sarees</span>
+</nav>
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+<div>
+<h1 class="font-display text-4xl md:text-5xl font-bold mb-2">Saree Collection</h1>
+<p class="text-slate-600 dark:text-slate-400 italic">Drape yourself in centuries of tradition and elegance.</p>
+</div>
+<div class="flex items-center space-x-4">
+<span class="text-sm text-slate-500 dark:text-slate-400">1,248 items</span>
+<div class="relative">
+<select class="appearance-none bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg px-4 py-2 pr-10 text-sm focus:ring-primary focus:border-primary">
+<option>Sort by: Popularity</option>
+<option>New Arrivals</option>
+<option>Price: Low to High</option>
+<option>Price: High to Low</option>
+</select>
+<span class="material-icons-outlined absolute right-3 top-2.5 text-sm pointer-events-none">expand_more</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col lg:flex-row gap-8">
+<aside class="w-full lg:w-64 space-y-8 flex-shrink-0">
+<div>
+<h3 class="text-sm font-bold uppercase tracking-wider mb-4 border-b border-slate-100 dark:border-slate-800 pb-2">Fabric</h3>
+<div class="space-y-2 max-h-48 overflow-y-auto custom-scrollbar pr-2">
+<label class="flex items-center group cursor-pointer">
+<input class="rounded text-primary focus:ring-primary h-4 w-4 border-slate-300" type="checkbox"/>
+<span class="ml-3 text-sm text-slate-600 dark:text-slate-400 group-hover:text-primary transition-colors">Silk (420)</span>
+</label>
+<label class="flex items-center group cursor-pointer">
+<input checked="" class="rounded text-primary focus:ring-primary h-4 w-4 border-slate-300" type="checkbox"/>
+<span class="ml-3 text-sm text-slate-600 dark:text-slate-400 group-hover:text-primary transition-colors">Chiffon (156)</span>
+</label>
+<label class="flex items-center group cursor-pointer">
+<input class="rounded text-primary focus:ring-primary h-4 w-4 border-slate-300" type="checkbox"/>
+<span class="ml-3 text-sm text-slate-600 dark:text-slate-400 group-hover:text-primary transition-colors">Cotton (310)</span>
+</label>
+<label class="flex items-center group cursor-pointer">
+<input class="rounded text-primary focus:ring-primary h-4 w-4 border-slate-300" type="checkbox"/>
+<span class="ml-3 text-sm text-slate-600 dark:text-slate-400 group-hover:text-primary transition-colors">Organza (88)</span>
+</label>
+<label class="flex items-center group cursor-pointer">
+<input class="rounded text-primary focus:ring-primary h-4 w-4 border-slate-300" type="checkbox"/>
+<span class="ml-3 text-sm text-slate-600 dark:text-slate-400 group-hover:text-primary transition-colors">Georgette (204)</span>
+</label>
+</div>
+</div>
+<div>
+<h3 class="text-sm font-bold uppercase tracking-wider mb-4 border-b border-slate-100 dark:border-slate-800 pb-2">Occasion</h3>
+<div class="space-y-2">
+<label class="flex items-center group cursor-pointer">
+<input class="rounded text-primary focus:ring-primary h-4 w-4 border-slate-300" type="checkbox"/>
+<span class="ml-3 text-sm text-slate-600 dark:text-slate-400 group-hover:text-primary transition-colors">Bridal</span>
+</label>
+<label class="flex items-center group cursor-pointer">
+<input checked="" class="rounded text-primary focus:ring-primary h-4 w-4 border-slate-300" type="checkbox"/>
+<span class="ml-3 text-sm text-slate-600 dark:text-slate-400 group-hover:text-primary transition-colors">Festive</span>
+</label>
+<label class="flex items-center group cursor-pointer">
+<input class="rounded text-primary focus:ring-primary h-4 w-4 border-slate-300" type="checkbox"/>
+<span class="ml-3 text-sm text-slate-600 dark:text-slate-400 group-hover:text-primary transition-colors">Party Wear</span>
+</label>
+</div>
+</div>
+<div>
+<h3 class="text-sm font-bold uppercase tracking-wider mb-4 border-b border-slate-100 dark:border-slate-800 pb-2">Color</h3>
+<div class="grid grid-cols-5 gap-2">
+<button class="w-8 h-8 rounded-full border border-slate-200 bg-red-600 focus:ring-2 focus:ring-primary focus:ring-offset-2 ring-offset-white dark:ring-offset-slate-900"></button>
+<button class="w-8 h-8 rounded-full border border-slate-200 bg-orange-500 focus:ring-2 focus:ring-primary focus:ring-offset-2 ring-offset-white dark:ring-offset-slate-900"></button>
+<button class="w-8 h-8 rounded-full border border-slate-200 bg-yellow-400 focus:ring-2 focus:ring-primary focus:ring-offset-2 ring-offset-white dark:ring-offset-slate-900"></button>
+<button class="w-8 h-8 rounded-full border border-slate-200 bg-emerald-700 focus:ring-2 focus:ring-primary focus:ring-offset-2 ring-offset-white dark:ring-offset-slate-900"></button>
+<button class="w-8 h-8 rounded-full border border-slate-200 bg-blue-800 focus:ring-2 focus:ring-primary focus:ring-offset-2 ring-offset-white dark:ring-offset-slate-900"></button>
+<button class="w-8 h-8 rounded-full border border-slate-200 bg-purple-600 focus:ring-2 focus:ring-primary focus:ring-offset-2 ring-offset-white dark:ring-offset-slate-900"></button>
+<button class="w-8 h-8 rounded-full border border-slate-200 bg-pink-400 focus:ring-2 focus:ring-primary focus:ring-offset-2 ring-offset-white dark:ring-offset-slate-900"></button>
+<button class="w-8 h-8 rounded-full border border-slate-200 bg-black focus:ring-2 focus:ring-primary focus:ring-offset-2 ring-offset-white dark:ring-offset-slate-900"></button>
+<button class="w-8 h-8 rounded-full border border-slate-200 bg-white focus:ring-2 focus:ring-primary focus:ring-offset-2 ring-offset-white dark:ring-offset-slate-900"></button>
+<button class="w-8 h-8 rounded-full border border-slate-200 bg-amber-800 focus:ring-2 focus:ring-primary focus:ring-offset-2 ring-offset-white dark:ring-offset-slate-900"></button>
+</div>
+</div>
+<div>
+<h3 class="text-sm font-bold uppercase tracking-wider mb-4 border-b border-slate-100 dark:border-slate-800 pb-2">Price</h3>
+<div class="space-y-2">
+<label class="flex items-center group cursor-pointer">
+<input class="rounded-full text-primary focus:ring-primary h-4 w-4 border-slate-300" name="price" type="radio"/>
+<span class="ml-3 text-sm text-slate-600 dark:text-slate-400">Under ₹5,000</span>
+</label>
+<label class="flex items-center group cursor-pointer">
+<input class="rounded-full text-primary focus:ring-primary h-4 w-4 border-slate-300" name="price" type="radio"/>
+<span class="ml-3 text-sm text-slate-600 dark:text-slate-400">₹5,000 - ₹15,000</span>
+</label>
+<label class="flex items-center group cursor-pointer">
+<input checked="" class="rounded-full text-primary focus:ring-primary h-4 w-4 border-slate-300" name="price" type="radio"/>
+<span class="ml-3 text-sm text-slate-600 dark:text-slate-400">₹15,000 - ₹50,000</span>
+</label>
+<label class="flex items-center group cursor-pointer">
+<input class="rounded-full text-primary focus:ring-primary h-4 w-4 border-slate-300" name="price" type="radio"/>
+<span class="ml-3 text-sm text-slate-600 dark:text-slate-400">Above ₹50,000</span>
+</label>
+</div>
+</div>
+<div class="pt-4">
+<button class="w-full bg-slate-900 dark:bg-slate-700 text-white py-3 rounded-lg text-sm font-bold hover:bg-slate-800 transition-colors">CLEAR ALL</button>
+</div>
+</aside>
+<div class="flex-1">
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-10">
+<div class="product-card group relative">
+<div class="relative aspect-[3/4] overflow-hidden rounded-xl bg-slate-100 dark:bg-slate-800">
+<img alt="Crimson Red Banarasi Silk Saree" class="h-full w-full object-cover object-center group-hover:scale-110 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDGmJUfZf7w79DI8w8aZ2BTlmbS4SfDxSQaMgSPVXYIIWR0Gd4OzcA9ppfVqx3l-V55PBkn66W2f3RdHJaDjPBIepfJZngyqpvhSpS_NLF5GWwnlah63IF9iF5avO0XtYJ4MXmR6C_jv7So80fGu_yjfv5W_JNJEKsPZvoM7UQso6XctsNt6HwAmSzhOX83nQjC0KkL-yZ9LhS_ow0UVs4ZHtIdufMiG3umedy--KXrZVM4ImG24iyCb_o5x0Pv_LDWCp4HJ0AoRJs"/>
+<div class="absolute top-4 left-4 bg-white/90 dark:bg-slate-900/90 px-3 py-1 text-[10px] font-bold tracking-widest rounded-full shadow-sm">NEW SEASON</div>
+<button class="absolute top-4 right-4 h-10 w-10 flex items-center justify-center rounded-full bg-white/90 dark:bg-slate-900/90 text-slate-900 dark:text-white hover:text-red-500 transition-colors shadow-sm">
+<span class="material-icons-outlined text-lg">favorite_border</span>
+</button>
+<div class="quick-add absolute inset-x-4 bottom-4 opacity-0 transform translate-y-4 transition-all duration-300">
+<button class="w-full bg-primary text-white py-3 rounded-lg text-xs font-bold shadow-xl hover:bg-orange-600 transition-colors uppercase tracking-widest">
+                                    Quick Add
+                                </button>
+</div>
+</div>
+<div class="mt-4 flex justify-between">
+<div>
+<h3 class="text-xs font-medium text-slate-500 uppercase tracking-wider mb-1">Handwoven Silk</h3>
+<p class="text-base font-display font-semibold">Crimson Heritage Banarasi</p>
+</div>
+<p class="text-base font-bold text-primary">₹34,500</p>
+</div>
+<div class="mt-2 flex space-x-2">
+<span class="w-3 h-3 rounded-full bg-red-700 border border-slate-200"></span>
+<span class="w-3 h-3 rounded-full bg-amber-600 border border-slate-200"></span>
+</div>
+</div>
+<div class="product-card group relative">
+<div class="relative aspect-[3/4] overflow-hidden rounded-xl bg-slate-100 dark:bg-slate-800">
+<img alt="Midnight Blue Chiffon Saree" class="h-full w-full object-cover object-center group-hover:scale-110 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrJSOjZZl4SZl3PHE3nw6A1OaI-mjllBQJ8kddbbr-XT1Mhy3bFUxS10WiCI2Oiqw3eGoaV1aVzMDVe9I4dpM6DtOTLvXiRk0ilMj1YcepQFJAiYwwQrMr6PYE-qip7Nh-nXvnINEPs2ToK5aKDBwerq39wp4vyU2IvlYCSbo-CvhnkPWgW6fMJZuNGQOLRyNPYKMYePwrrEj_NRsEnNi5d-VlvyuLZITnh6tzo6gvGSv_JzOokfDMp_bJ5OpWcosUUnPRSZ75dYk"/>
+<div class="absolute top-4 left-4 bg-primary text-white px-3 py-1 text-[10px] font-bold tracking-widest rounded-full shadow-sm">BESTSELLER</div>
+<button class="absolute top-4 right-4 h-10 w-10 flex items-center justify-center rounded-full bg-white/90 dark:bg-slate-900/90 text-slate-900 dark:text-white hover:text-red-500 transition-colors shadow-sm">
+<span class="material-icons-outlined text-lg">favorite_border</span>
+</button>
+<div class="quick-add absolute inset-x-4 bottom-4 opacity-0 transform translate-y-4 transition-all duration-300">
+<button class="w-full bg-primary text-white py-3 rounded-lg text-xs font-bold shadow-xl hover:bg-orange-600 transition-colors uppercase tracking-widest">
+                                    Quick Add
+                                </button>
+</div>
+</div>
+<div class="mt-4 flex justify-between">
+<div>
+<h3 class="text-xs font-medium text-slate-500 uppercase tracking-wider mb-1">Designer Chiffon</h3>
+<p class="text-base font-display font-semibold">Starlit Midnight Chiffon</p>
+</div>
+<div>
+<p class="text-base font-bold text-primary">₹12,200</p>
+<p class="text-[10px] text-slate-400 line-through text-right">₹15,000</p>
+</div>
+</div>
+</div>
+<div class="product-card group relative">
+<div class="relative aspect-[3/4] overflow-hidden rounded-xl bg-slate-100 dark:bg-slate-800">
+<img alt="Pastel Mint Organza Saree" class="h-full w-full object-cover object-center group-hover:scale-110 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuANhrDjyc8NOLSPTkZDtULgyGGFw84SmVq4ZGL_vl86gZBGbRGGoE9LVhBZgsNO3aFdO2l9t9GIi2-wom8loLKhaoB88iggk6bkrD_o1JipCb-U15gYVPaTCEJfaL90v5VLLEFlzkcuHSwog68fBskdmqqiTL7xDZPwhIUm2QPooWiiojan3ZER8Npugc5Kp9UISEApessf7E8IJZdMnWu9HQgB2Z5d526sIQclyevUJ9y5BDzBxBb4fdh_actSCuGjH6c52oCW1H8"/>
+<button class="absolute top-4 right-4 h-10 w-10 flex items-center justify-center rounded-full bg-white/90 dark:bg-slate-900/90 text-slate-900 dark:text-white hover:text-red-500 transition-colors shadow-sm">
+<span class="material-icons-outlined text-lg">favorite_border</span>
+</button>
+<div class="quick-add absolute inset-x-4 bottom-4 opacity-0 transform translate-y-4 transition-all duration-300">
+<button class="w-full bg-primary text-white py-3 rounded-lg text-xs font-bold shadow-xl hover:bg-orange-600 transition-colors uppercase tracking-widest">
+                                    Quick Add
+                                </button>
+</div>
+</div>
+<div class="mt-4 flex justify-between">
+<div>
+<h3 class="text-xs font-medium text-slate-500 uppercase tracking-wider mb-1">Ethereal Organza</h3>
+<p class="text-base font-display font-semibold">Mint Floral Hand-Painted</p>
+</div>
+<p class="text-base font-bold text-primary">₹18,900</p>
+</div>
+</div>
+<div class="product-card group relative">
+<div class="relative aspect-[3/4] overflow-hidden rounded-xl bg-slate-100 dark:bg-slate-800">
+<img alt="Royal Emerald Kanjeevaram" class="h-full w-full object-cover object-center group-hover:scale-110 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTuHosdOuGxtSKB-1wvMc_AEY-VA1EIJ44yUJf0dyOa3hbn1CUf5S8N567709_RCXjlh2KVWBo1N-9lP5kfRL5dBCQyz-YOFvSansm3-1qrBipSq49_XA-m6LkEv87CSUCQiGjaaanumQ__yNHTDqaZXcyd23fnW0z63uxy7PpXTJTCP7I6hj4HBMYgjqxfO7JLNcnHCOxqwScR3CvMEpJ9YKaLvkSBzKpeIX3SgDrAAip38w6p13gPk2LG4O9iaQBVnVFRw-yPv8"/>
+<button class="absolute top-4 right-4 h-10 w-10 flex items-center justify-center rounded-full bg-white/90 dark:bg-slate-900/90 text-slate-900 dark:text-white hover:text-red-500 transition-colors shadow-sm">
+<span class="material-icons-outlined text-lg text-red-500">favorite</span>
+</button>
+<div class="quick-add absolute inset-x-4 bottom-4 opacity-0 transform translate-y-4 transition-all duration-300">
+<button class="w-full bg-primary text-white py-3 rounded-lg text-xs font-bold shadow-xl hover:bg-orange-600 transition-colors uppercase tracking-widest">
+                                    Quick Add
+                                </button>
+</div>
+</div>
+<div class="mt-4 flex justify-between">
+<div>
+<h3 class="text-xs font-medium text-slate-500 uppercase tracking-wider mb-1">Luxe Kanjeevaram</h3>
+<p class="text-base font-display font-semibold">Emerald Gold Border Saree</p>
+</div>
+<p class="text-base font-bold text-primary">₹56,000</p>
+</div>
+</div>
+<div class="product-card group relative">
+<div class="relative aspect-[3/4] overflow-hidden rounded-xl bg-slate-100 dark:bg-slate-800">
+<img alt="Peach Chikankari Saree" class="h-full w-full object-cover object-center group-hover:scale-110 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPRlMFIlopBxKB3QUr2yKoEzARy-DJVZnGuRMirACcEXMENiWgV4zXMkVSKKbtgBj85jMsBDfXIPhpXJedrcoCGXfaSriSnPyFf_KNL_C3gZS_ABEJOA6rtEG6uLIavqpzhuuxzKK0XSicKqWDKcPne9R5J8Y4VbLDehRHdOeHt9GgZtxS6-WturSokqW8gpR-uJaXMfldX_ABamo_ryLPLcu04UjvRyEnIti9AKNvgmhQVbNvvwxgsk0L9BROE9GilevEeHs2MhU"/>
+<button class="absolute top-4 right-4 h-10 w-10 flex items-center justify-center rounded-full bg-white/90 dark:bg-slate-900/90 text-slate-900 dark:text-white hover:text-red-500 transition-colors shadow-sm">
+<span class="material-icons-outlined text-lg">favorite_border</span>
+</button>
+<div class="quick-add absolute inset-x-4 bottom-4 opacity-0 transform translate-y-4 transition-all duration-300">
+<button class="w-full bg-primary text-white py-3 rounded-lg text-xs font-bold shadow-xl hover:bg-orange-600 transition-colors uppercase tracking-widest">
+                                    Quick Add
+                                </button>
+</div>
+</div>
+<div class="mt-4 flex justify-between">
+<div>
+<h3 class="text-xs font-medium text-slate-500 uppercase tracking-wider mb-1">Lucknowi Craft</h3>
+<p class="text-base font-display font-semibold">Peach Sorbet Chikankari</p>
+</div>
+<p class="text-base font-bold text-primary">₹22,400</p>
+</div>
+</div>
+<div class="product-card group relative">
+<div class="relative aspect-[3/4] overflow-hidden rounded-xl bg-slate-100 dark:bg-slate-800">
+<img alt="Deep Plum Party Saree" class="h-full w-full object-cover object-center group-hover:scale-110 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDSZTsh-IyqKBk7WTJsBkSt81z5RJop1RjpIS00kbn2FfjaMXh4kmDeuo0wb8VJHeG9Idz-RvDVeyUu2DbTeFVtp5zfxY2D-iqF6lItr-OrKSBrRP6lWWBC_6wc1uO8QtkxMymmWj3mFhtexkiue6FeWe1J3t84jZYu2tee9SF_r41VTQoPCXzqqP89_cp5zsVtj_0KFLbW-uRs_zmCTRuS44otk3QLSiey-0Pcx0s-wGQ02ltsOqKnFcZo-ct5xY1f4OK1YvgrvDo"/>
+<div class="absolute bottom-4 left-4 bg-slate-900/80 text-white text-[9px] px-2 py-1 rounded backdrop-blur-sm">LOW STOCK</div>
+<button class="absolute top-4 right-4 h-10 w-10 flex items-center justify-center rounded-full bg-white/90 dark:bg-slate-900/90 text-slate-900 dark:text-white hover:text-red-500 transition-colors shadow-sm">
+<span class="material-icons-outlined text-lg">favorite_border</span>
+</button>
+<div class="quick-add absolute inset-x-4 bottom-4 opacity-0 transform translate-y-4 transition-all duration-300">
+<button class="w-full bg-primary text-white py-3 rounded-lg text-xs font-bold shadow-xl hover:bg-orange-600 transition-colors uppercase tracking-widest">
+                                    Quick Add
+                                </button>
+</div>
+</div>
+<div class="mt-4 flex justify-between">
+<div>
+<h3 class="text-xs font-medium text-slate-500 uppercase tracking-wider mb-1">Georgette Glow</h3>
+<p class="text-base font-display font-semibold">Deep Plum Sequin Saree</p>
+</div>
+<p class="text-base font-bold text-primary">₹16,750</p>
+</div>
+</div>
+</div>
+<div class="mt-16 flex items-center justify-center space-x-2">
+<button class="h-10 w-10 flex items-center justify-center rounded-lg border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+<span class="material-icons-outlined">chevron_left</span>
+</button>
+<button class="h-10 w-10 flex items-center justify-center rounded-lg bg-primary text-white font-bold">1</button>
+<button class="h-10 w-10 flex items-center justify-center rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">2</button>
+<button class="h-10 w-10 flex items-center justify-center rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">3</button>
+<span class="px-2">...</span>
+<button class="h-10 w-10 flex items-center justify-center rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">12</button>
+<button class="h-10 w-10 flex items-center justify-center rounded-lg border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+<span class="material-icons-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+<footer class="bg-slate-50 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-900 mt-20 py-16">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-12">
+<div class="space-y-6">
+<img alt="Punya Logo" class="h-8 w-auto" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDaaQEERWPlPziKBsl_QgdMZZJWyKgjOa2SeVHxXeU3r8O-KDkRNqFmedxggalyYTAA2Pmrvd0Dm-yxouYCHfPacLoYNpYVRD9RyzwoUiC2A63UuV2KYoMgSDnhlDDTYVQaXa2jt-yE3eR9Hd1n8ztgEHebJbWsZbUBjVwK7y6hijsvvArH9aF7PuL6Kaci1w3ak6QbBt4ktJD31KhNwQK9lKLbUse1F2PoVOIokn1vBY87kCIVR6FA__4Gx65X6K9eVVCVqsNAsjg"/>
+<p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">Punya is dedicated to preserving the rich heritage of Indian weaves while modernizing silhouettes for the contemporary woman.</p>
+<div class="flex space-x-4">
+<a class="h-8 w-8 rounded-full border border-slate-300 dark:border-slate-700 flex items-center justify-center text-slate-400 hover:text-primary transition-colors" href="#">
+<i class="fab fa-instagram"></i>
+</a>
+<a class="h-8 w-8 rounded-full border border-slate-300 dark:border-slate-700 flex items-center justify-center text-slate-400 hover:text-primary transition-colors" href="#">
+<i class="fab fa-facebook"></i>
+</a>
+<a class="h-8 w-8 rounded-full border border-slate-300 dark:border-slate-700 flex items-center justify-center text-slate-400 hover:text-primary transition-colors" href="#">
+<i class="fab fa-pinterest"></i>
+</a>
+</div>
+</div>
+<div>
+<h4 class="font-bold text-sm uppercase tracking-widest mb-6">Shopping Guide</h4>
+<ul class="space-y-3 text-sm text-slate-500 dark:text-slate-400">
+<li><a class="hover:text-primary" href="#">Draping Guides</a></li>
+<li><a class="hover:text-primary" href="#">Saree Care Tips</a></li>
+<li><a class="hover:text-primary" href="#">Fabric Guide</a></li>
+<li><a class="hover:text-primary" href="#">Shipping &amp; Returns</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold text-sm uppercase tracking-widest mb-6">Company</h4>
+<ul class="space-y-3 text-sm text-slate-500 dark:text-slate-400">
+<li><a class="hover:text-primary" href="#">Our Story</a></li>
+<li><a class="hover:text-primary" href="#">Artisans &amp; Craft</a></li>
+<li><a class="hover:text-primary" href="#">Sustainability</a></li>
+<li><a class="hover:text-primary" href="#">Contact Us</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold text-sm uppercase tracking-widest mb-6">Newsletter</h4>
+<p class="text-sm text-slate-500 dark:text-slate-400 mb-4">Be the first to know about new collection launches.</p>
+<form class="flex">
+<input class="w-full text-sm bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 rounded-l-lg focus:ring-primary focus:border-primary" placeholder="Your email" type="email"/>
+<button class="bg-primary text-white px-4 rounded-r-lg hover:bg-orange-600 transition-colors" type="submit">
+<span class="material-icons-outlined">arrow_forward</span>
+</button>
+</form>
+</div>
+</div>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16 pt-8 border-t border-slate-200 dark:border-slate-900 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 text-xs text-slate-400">
+<p>© 2024 Punya Ethnic Wear. All rights reserved.</p>
+<div class="flex space-x-6">
+<a class="hover:text-primary" href="#">Terms of Service</a>
+<a class="hover:text-primary" href="#">Privacy Policy</a>
+<a class="hover:text-primary" href="#">Accessibility</a>
+</div>
+</div>
+</footer>
+<div class="fixed bottom-6 right-6 md:hidden">
+<button class="bg-primary text-white h-14 w-14 rounded-full shadow-2xl flex items-center justify-center">
+<span class="material-icons-outlined">filter_list</span>
+</button>
+</div>
+
+</body></html>
