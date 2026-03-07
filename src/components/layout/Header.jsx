@@ -199,7 +199,13 @@ const Header = () => {
                                             Hi, {user.WebUserName}
                                         </div>
                                         <Link to="/account" className="flex items-center gap-2 px-4 py-2 text-sm text-slate-600 hover:text-primary transition-colors">
-                                            <span className="material-icons-outlined text-sm">manage_accounts</span> My Account
+                                            <span className="material-icons-outlined text-sm">manage_accounts</span> My Dashboard
+                                        </Link>
+                                        <Link to="/account/orders" className="flex items-center gap-2 px-4 py-2 text-sm text-slate-600 hover:text-primary transition-colors">
+                                            <span className="material-icons-outlined text-sm">shopping_bag</span> My Orders
+                                        </Link>
+                                        <Link to="/account/profile" className="flex items-center gap-2 px-4 py-2 text-sm text-slate-600 hover:text-primary transition-colors">
+                                            <span className="material-icons-outlined text-sm">person</span> My Profile
                                         </Link>
                                         <button onClick={logout} className="w-full text-left flex items-center gap-2 px-4 py-2 text-sm text-red-500 hover:bg-red-50 rounded-lg transition-colors mt-1">
                                             <span className="material-icons-outlined text-sm">logout</span> Logout

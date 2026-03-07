@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import api from '../api/axiosConfig';
 
 const Login = () => {
     const { login } = useAuth();
@@ -19,22 +20,51 @@ const Login = () => {
         setError('');
 
         if (!mobileOrEmail || !password) {
-            setError('Please enter both mobile/email and password.');
+            setError('Please enter both mobile and password.');
             return;
         }
 
         try {
             setLoading(true);
-            // using the context login method that handles SendOTP/VerifyOTP
-            const success = await login(mobileOrEmail, password);
-            if (success) {
+
+            const loginPayload = {
+                id: 0,
+                username: mobileOrEmail,
+                fullname: null,
+                password: password,
+                firstName: null,
+                lastName: null,
+                createdDate: new Date().toISOString(),
+                isActive: 1,
+                mobileNo: mobileOrEmail,
+                type: null,
+                result: 0,
+                otp: null,
+                natureOfBusiness: null,
+                emailId: null,
+                isGSTIN: null,
+                gstNumber: null,
+                shippingAddress: null,
+                cityName: null,
+                companyName: null,
+                showAddress: null,
+                stateId: 0,
+                cityId: 0,
+                userType: 0
+            };
+
+            const response = await api.post('/VerifyOTP', loginPayload);
+
+            // Check for success based on typical API patterns in this project (status_code 100 or result 1)
+            if (response.data && (response.data.status_code === 100 || response.data.result === 1)) {
+                login(response.data);
                 navigate(from, { replace: true });
             } else {
-                setError('Login failed. Please check your credentials.');
+                setError(response.data?.message || 'Login failed. Please check your credentials.');
             }
         } catch (err) {
             console.error("Login Error", err);
-            setError('An error occurred during login.');
+            setError(err.response?.data?.message || 'An error occurred during login.');
         } finally {
             setLoading(false);
         }

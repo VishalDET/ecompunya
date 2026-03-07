@@ -6,6 +6,8 @@ const Signup = () => {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         customerName: '',
+        emailId: '',
+        password: '',
         shopName: '',
         mobileNumber: '',
         state: '',
@@ -33,9 +35,34 @@ const Signup = () => {
         setError('');
         setLoading(true);
 
+        const registrationPayload = {
+            id: 0,
+            fullname: formData.customerName,
+            companyName: formData.shopName || null,
+            mobileNo: formData.mobileNumber,
+            password: formData.password,
+            natureOfBusiness: 0,
+            emailId: formData.emailId,
+            isGSTIN: !!formData.gstNumber,
+            gstNumber: formData.gstNumber || null,
+            shippingAddress: formData.address || null,
+            shippingAddressLine2: null,
+            billingAddress: formData.address || null,
+            stateId: 0,
+            stateName: formData.state || null,
+            cityId: 0,
+            pincode: parseInt(formData.pincode) || 0,
+            cityName: formData.city || null,
+            spType: 'C',
+            createdDate: new Date().toISOString(),
+            isActive: 1,
+            modifiedDate: new Date().toISOString()
+        };
+
         try {
-            const response = await api.post('../AddCustomer', formData);
-            if (response.data && response.data.status_code === 100) {
+            const response = await api.post('/registration', registrationPayload);
+            // Assuming 100 or 200/201 might be success based on common patterns
+            if (response.status === 200 || response.status === 201 || response.data?.status_code === 100) {
                 setSuccess(true);
                 setTimeout(() => {
                     navigate('/login');
@@ -45,7 +72,7 @@ const Signup = () => {
             }
         } catch (err) {
             console.error("Signup Error", err);
-            setError('An error occurred during signup. Please check your connection.');
+            setError(err.response?.data?.message || 'An error occurred during signup. Please check your connection.');
         } finally {
             setLoading(false);
         }
@@ -91,6 +118,32 @@ const Signup = () => {
                             onChange={handleChange}
                             className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all"
                             placeholder="Enter your name"
+                        />
+                    </div>
+
+                    <div className="space-y-2 col-span-1">
+                        <label className="text-sm font-semibold text-gray-700">Email Address *</label>
+                        <input
+                            required
+                            type="email"
+                            name="emailId"
+                            value={formData.emailId}
+                            onChange={handleChange}
+                            className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all"
+                            placeholder="Email address"
+                        />
+                    </div>
+
+                    <div className="space-y-2 col-span-1">
+                        <label className="text-sm font-semibold text-gray-700">Password *</label>
+                        <input
+                            required
+                            type="password"
+                            name="password"
+                            value={formData.password}
+                            onChange={handleChange}
+                            className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all"
+                            placeholder="Password"
                         />
                     </div>
 

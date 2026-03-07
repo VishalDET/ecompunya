@@ -17,6 +17,10 @@ import PrivacyPolicy from './pages/PrivacyPolicy';
 import ShippingPolicy from './pages/ShippingPolicy';
 
 import Signup from './pages/Signup';
+import Account from './pages/Account';
+import Profile from './pages/Profile';
+import OrderHistory from './pages/OrderHistory';
+import OrderDetails from './pages/OrderDetails';
 
 function App() {
   return (
@@ -39,7 +43,12 @@ function App() {
           <Route path="/terms" element={<Terms />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="/shipping" element={<ShippingPolicy />} />
-          {/* Add more routes here, e.g., register, my account */}
+
+          <Route path="/account" element={<Account />}>
+            <Route path="profile" element={<Profile />} />
+            <Route path="orders" element={<OrderHistory />} />
+            <Route path="orders/:orderId" element={<OrderDetails />} />
+          </Route>
         </Routes>
       </main>
       <Footer />
