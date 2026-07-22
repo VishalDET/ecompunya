@@ -41,7 +41,7 @@ const BannerSlider = () => {
     if (banners.length === 0) return null;
 
     return (
-        <div className="relative w-full overflow-hidden">
+        <div className="relative w-full max-h-[80vh] overflow-hidden">
             <Swiper
                 modules={[Autoplay, EffectFade, Navigation, Pagination, Parallax]}
                 effect="fade"

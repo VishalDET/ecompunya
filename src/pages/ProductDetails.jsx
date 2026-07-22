@@ -146,7 +146,7 @@ const ProductDetails = () => {
                             <img
                                 src={mainImage}
                                 alt={product.ProductTitle}
-                                className="w-full h-auto max-h-full object-contain object-center group-hover:scale-[1.02] transition-transform duration-500"
+                                className="w-full h-auto max-h-[70vh] object-contain object-center group-hover:scale-[1.02] transition-transform duration-500"
                             />
                             {discountPercent > 0 && (
                                 <div className="absolute top-6 left-6 bg-punya-orange text-white text-sm font-bold px-3 py-1.5 rounded-lg shadow-sm">
@@ -296,7 +296,7 @@ const ProductDetails = () => {
                         </div>
 
                         {/* Features List Optional */}
-                        <div className="grid grid-cols-2 gap-4 mt-8 pt-8 border-t border-gray-100">
+                        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 mt-8 pt-8 border-t border-gray-100">
                             <div className="flex items-center gap-3 text-sm text-gray-600">
                                 <svg className="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" /></svg>
                                 <span>Premium Quality</span>
