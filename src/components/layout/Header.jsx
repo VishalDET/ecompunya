@@ -147,7 +147,7 @@ const Header = () => {
                                         ))}
                                     </div>
 
-                                    {/* Sidebar Promo Area */}
+                                    {/* Sidebar Promo Area 
                                     <div className="w-64 bg-slate-50 p-6 flex flex-col justify-between border-l border-slate-100">
                                         <div>
                                             <h5 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-4">Trending Now</h5>
@@ -164,7 +164,7 @@ const Header = () => {
                                             <p className="text-[10px] font-bold text-primary uppercase mb-1">Limited Offer</p>
                                             <p className="text-xs font-medium text-slate-600">Flat 20% OFF on first order</p>
                                         </div>
-                                    </div>
+                                    </div>*/}
                                 </div>
                             )}
                         </div>

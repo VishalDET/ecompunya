@@ -40,16 +40,25 @@ const Home = () => {
         const fetchHomeData = async () => {
             try {
                 setLoading(true);
-                const [naMen, naWomen, bsMen, bsWomen, catRes] = await Promise.all([
+                const [naMen, naWomen, bsMen, bsWomen, catRes] = await Promise.allSettled([
                     api.get('GetNewArrival?Id=1'),
                     api.get('GetNewArrival?Id=2'),
                     api.get('GetBestseller?Id=1'),
                     api.get('GetBestseller?Id=2'),
                     api.post('GetCategoryView'),
                 ]);
-                setNewArrivals({ 1: naMen.data?.data || [], 2: naWomen.data?.data || [] });
-                setBestSellers({ 1: bsMen.data?.data || [], 2: bsWomen.data?.data || [] });
-                setCategories(catRes.data?.data || []);
+
+                const val = (result) => result.status === 'fulfilled' ? result.value : null;
+
+                setNewArrivals({
+                    1: val(naMen)?.data?.data || [],
+                    2: val(naWomen)?.data?.data || [],
+                });
+                setBestSellers({
+                    1: val(bsMen)?.data?.data || [],
+                    2: val(bsWomen)?.data?.data || [],
+                });
+                setCategories(val(catRes)?.data?.data || []);
             } catch (error) {
                 console.error('Error fetching homepage data', error);
             } finally {
@@ -116,61 +125,70 @@ const Home = () => {
             </section>
 
             {/* ── Sub-Category Grids (one per main category) ─────────────────── */}
-            {categories.map((cat, i) => (
-                <section
-                    key={cat.main_category_id}
-                    className={`mb-20 py-16 ${i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}`}
-                >
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <SectionHeading title={cat.main_category_name} />
-                        <div className="space-y-14">
-                            {cat.sub_categories.map(sub => (
-                                <div key={sub.sub_category_id}>
-                                    {/* Sub-category header */}
-                                    <div className="flex items-center gap-4 mb-6">
-                                        <h3 className="font-display text-xl font-bold text-slate-900 whitespace-nowrap">
-                                            {sub.sub_category_name.replace(/-MEN|-WOMEN/i, '').trim()}
-                                        </h3>
-                                        <div className="flex-1 h-px bg-slate-100" />
-                                        <Link
-                                            to={`/collections/${sub.sub_category_id}`}
-                                            className="text-xs font-bold text-primary hover:underline whitespace-nowrap flex items-center gap-1"
-                                        >
-                                            View All <span className="material-icons-outlined text-sm">arrow_forward</span>
-                                        </Link>
-                                    </div>
+            {categories.map((cat, i) => {
+                const isWomens = /women/i.test(cat.main_category_name);
+                return (
+                    <section
+                        key={cat.main_category_id}
+                        className={`py-20 relative ${!isWomens ? (i % 2 === 0 ? 'bg-white' : 'bg-slate-50') : ''}`}
+                        style={isWomens ? {
+                            backgroundImage: 'url(/assets/img/bg-images/punya-bg-1.png)',
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'center',
+                            backgroundRepeat: 'no-repeat',
+                        } : undefined}
+                    >
+                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                            <SectionHeading title={cat.main_category_name} />
+                            <div className="space-y-14">
+                                {cat.sub_categories.map(sub => (
+                                    <div key={sub.sub_category_id}>
+                                        {/* Sub-category header */}
+                                        <div className="flex items-center gap-4 mb-6">
+                                            <h3 className="font-display text-xl font-bold text-slate-900 whitespace-nowrap">
+                                                {sub.sub_category_name.replace(/-MEN|-WOMEN/i, '').trim()}
+                                            </h3>
+                                            <div className="flex-1 h-px bg-slate-100" />
+                                            <Link
+                                                to={`/collections/${sub.sub_category_id}`}
+                                                className="text-xs font-bold text-primary hover:underline whitespace-nowrap flex items-center gap-1"
+                                            >
+                                                View All <span className="material-icons-outlined text-sm">arrow_forward</span>
+                                            </Link>
+                                        </div>
 
-                                    {/* Child category cards */}
-                                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                                        {sub.child_category.map(child => {
-                                            const imgSrc = child.child_category_image_url || sub.sub_category_image_url || cat.main_category_image_url;
-                                            return (
-                                                <Link
-                                                    key={child.child_category_id}
-                                                    to={`/collections/${child.child_category_id}`}
-                                                    className="group flex flex-col items-center"
-                                                >
-                                                    <div className="w-full aspect-square rounded-2xl overflow-hidden bg-slate-100 mb-3 relative">
-                                                        <img
-                                                            src={imgSrc}
-                                                            alt={child.child_category_name}
-                                                            className="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-500"
-                                                        />
-                                                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300 rounded-2xl" />
-                                                    </div>
-                                                    <p className="text-xs font-bold text-slate-700 text-center uppercase tracking-wider group-hover:text-primary transition-colors">
-                                                        {child.child_category_name}
-                                                    </p>
-                                                </Link>
-                                            );
-                                        })}
+                                        {/* Child category cards */}
+                                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                                            {sub.child_category.map(child => {
+                                                const imgSrc = child.child_category_image_url || sub.sub_category_image_url || cat.main_category_image_url;
+                                                return (
+                                                    <Link
+                                                        key={child.child_category_id}
+                                                        to={`/collections/${child.child_category_id}`}
+                                                        className="group flex flex-col items-center"
+                                                    >
+                                                        <div className="w-full aspect-square rounded-2xl overflow-hidden bg-slate-100 mb-3 relative">
+                                                            <img
+                                                                src={imgSrc}
+                                                                alt={child.child_category_name}
+                                                                className="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-500"
+                                                            />
+                                                            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300 rounded-2xl" />
+                                                        </div>
+                                                        <p className="text-xs font-bold text-slate-700 text-center uppercase tracking-wider group-hover:text-primary transition-colors">
+                                                            {child.child_category_name}
+                                                        </p>
+                                                    </Link>
+                                                );
+                                            })}
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
+                                ))}
+                            </div>
                         </div>
-                    </div>
-                </section>
-            ))}
+                    </section>
+                );
+            })}
 
             {/* ── Bestsellers ─────────────────────────────────────────────────── */}
             <section className="bg-white">

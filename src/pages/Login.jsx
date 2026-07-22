@@ -29,7 +29,7 @@ const Login = () => {
 
             const loginPayload = {
                 id: 0,
-                username: mobileOrEmail,
+                username: null,
                 fullname: null,
                 password: password,
                 firstName: null,

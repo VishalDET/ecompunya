@@ -146,7 +146,7 @@ const ProductDetails = () => {
                             <img
                                 src={mainImage}
                                 alt={product.ProductTitle}
-                                className="w-full h-auto max-h-[500px] object-contain object-center group-hover:scale-[1.02] transition-transform duration-500"
+                                className="w-full h-auto max-h-full object-contain object-center group-hover:scale-[1.02] transition-transform duration-500"
                             />
                             {discountPercent > 0 && (
                                 <div className="absolute top-6 left-6 bg-punya-orange text-white text-sm font-bold px-3 py-1.5 rounded-lg shadow-sm">
