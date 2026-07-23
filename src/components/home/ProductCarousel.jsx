@@ -1,7 +1,9 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
+import { useWishlist } from '../../context/WishlistContext';
 
 const ProductCarousel = ({ products }) => {
+    const { toggleWishlist, isInWishlist } = useWishlist();
     const scrollRef = useRef(null);
     const [canScrollLeft, setCanScrollLeft] = useState(false);
     const [canScrollRight, setCanScrollRight] = useState(true);
@@ -127,8 +129,18 @@ const ProductCarousel = ({ products }) => {
                                     </div>
                                 )}
 
-                                <button className="absolute top-3 right-3 h-9 w-9 flex items-center justify-center rounded-full bg-white/90 text-slate-700 hover:text-red-500 transition-colors shadow-sm">
-                                    <span className="material-icons-outlined text-base">favorite_border</span>
+                                <button
+                                    onClick={() => toggleWishlist(item)}
+                                    className={`absolute top-3 right-3 h-9 w-9 flex items-center justify-center rounded-full transition-colors shadow-sm outline-none
+                                        ${isInWishlist(item.ProductId || item.productId)
+                                            ? 'bg-red-50 text-red-500 hover:bg-red-100'
+                                            : 'bg-white/90 text-slate-700 hover:text-red-500'
+                                        }`}
+                                    title={isInWishlist(item.ProductId || item.productId) ? "Remove from Wishlist" : "Add to Wishlist"}
+                                >
+                                    <span className={`material-icons-outlined text-base ${isInWishlist(item.ProductId || item.productId) ? 'material-icons' : ''}`}>
+                                        {isInWishlist(item.ProductId || item.productId) ? 'favorite' : 'favorite_border'}
+                                    </span>
                                 </button>
 
                                 {/* Quick view overlay */}

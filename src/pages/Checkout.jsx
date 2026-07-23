@@ -33,13 +33,12 @@ const Checkout = () => {
             try {
                 const userId = user?.Id || 0;
 
-                // Fetch Cart details
-                const cartRes = await api.get(`CartProduct?UserId=${userId}`);
+                const cartRes = await api.post(`GetCartProduct?UserId=${userId}`);
                 if (cartRes.data && cartRes.data.status_code === 100 && cartRes.data.data) {
                     const data = cartRes.data.data;
                     if (data.length > 0) {
-                        setCartItems(data.slice(0, data.length - 1));
-                        setSummary(data[data.length - 1]);
+                        setCartItems(data.filter(item => item.ItemType !== 'totalsum'));
+                        setSummary(data.find(item => item.ItemType === 'totalsum') || null);
                     }
                 }
 

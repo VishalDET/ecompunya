@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
@@ -14,6 +14,14 @@ const Cart = () => {
         removeCartItem,
         loadCart
     } = useCart();
+
+    const [showModal, setShowModal] = useState(false);
+    const [selectedItem, setSelectedItem] = useState(null);
+
+    const formatPrice = (value) => {
+        const num = parseFloat(value);
+        return isNaN(num) ? '0.00' : num.toFixed(2);
+    };
 
     // Ensure cart is fresh when loading the page
     useEffect(() => {
@@ -35,7 +43,7 @@ const Cart = () => {
                         {cartItems.length > 0 ? (
                             <div className="space-y-4">
                                 {cartItems.map(item => (
-                                    <article key={item.PackageId} className="bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col sm:flex-row items-start sm:items-center gap-6 relative group transition-shadow hover:shadow-md">
+                                    <article key={item.Id || item.PackageId} className="bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col sm:flex-row items-start sm:items-center gap-6 relative group transition-shadow hover:shadow-md">
 
                                         <div className="w-24 h-32 sm:w-32 sm:h-40 flex-shrink-0 bg-gray-50 rounded-xl overflow-hidden border border-gray-100 flex items-center justify-center p-0">
                                             <img src={item.MainImage} alt={item.ProductTitle} className="w-full h-full object-contain mix-blend-multiply" />
@@ -53,10 +61,10 @@ const Cart = () => {
                                                     <span className="bg-gray-100 px-2 py-0.5 rounded text-gray-700 font-medium">Color: {item.Color}</span>
                                                 </p>
                                                 <div className="flex items-center gap-2 mb-1">
-                                                    <p className="font-bold text-gray-900">₹ {item.SalePrice}</p>
+                                                    <p className="font-bold text-gray-900">₹ {formatPrice(item.SalePrice)}</p>
                                                     {item.Price > item.SalePrice && (
                                                         <>
-                                                            <p className="text-xs text-gray-400 line-through">₹ {item.Price}</p>
+                                                            <p className="text-xs text-gray-400 line-through">₹ {formatPrice(item.Price)}</p>
                                                             <p className="text-[10px] font-bold text-green-600 bg-green-50 px-1.5 py-0.5 rounded">
                                                                 {Math.round(((item.Price - item.SalePrice) / item.Price) * 100)}% OFF
                                                             </p>
@@ -86,14 +94,17 @@ const Cart = () => {
 
                                                 <div className="text-right">
                                                     <p className="text-xs text-gray-500 mb-1">Total</p>
-                                                    <p className="text-lg font-extrabold text-punya-dark">₹ {item.Quantity * item.SalePrice}</p>
+                                                    <p className="text-lg font-extrabold text-punya-dark">₹ {formatPrice(item.Quantity * item.SalePrice)}</p>
                                                 </div>
                                             </div>
                                         </div>
 
                                         {/* Remove Button */}
                                         <button
-                                            onClick={() => removeCartItem(item.ProductId, item.PackageId)}
+                                            onClick={() => {
+                                                setSelectedItem({ productId: item.ProductId || item.productId, packageId: item.PackageId || item.packageId, title: item.ProductTitle });
+                                                setShowModal(true);
+                                            }}
                                             className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-gray-50 text-gray-400 hover:bg-red-50 hover:text-red-500 transition-colors"
                                             title="Remove item"
                                         >
@@ -129,17 +140,20 @@ const Cart = () => {
                                 <div className="space-y-4">
                                     <div className="flex justify-between text-gray-600">
                                         <span>Subtotal ({cartItems.length} items)</span>
-                                        <span className="font-medium text-gray-900">₹ {summary.SubTotal || summary.TotalPrice}</span>
+                                        <span className="font-medium text-gray-900">₹ {formatPrice(summary.SubTotal || summary.TotalPrice)}</span>
                                     </div>
                                     <div className="flex justify-between text-gray-600">
                                         <span>Estimated Shipping</span>
                                         <span className="font-medium text-gray-900">
-                                            {(summary.ShippingCharge > 0 || summary.ShippingCharges > 0) ? `₹ ${summary.ShippingCharge || summary.ShippingCharges}` : 'Free'}
+                                            {(() => {
+                                                const charge = parseFloat(summary.ShippingCharge || summary.ShippingCharges || 0);
+                                                return charge > 0 ? `₹ ${formatPrice(charge)}` : 'Free';
+                                            })()}
                                         </span>
                                     </div>
                                     <div className="flex justify-between text-gray-600 pb-4 border-b border-gray-100">
                                         <span>Estimated Tax (GST)</span>
-                                        <span className="font-medium text-gray-900">₹ {summary.GST || summary.GSTAmount || 0}</span>
+                                        <span className="font-medium text-gray-900">₹ {formatPrice(summary.GST || summary.GSTAmount || 0)}</span>
                                     </div>
 
                                     {(summary.DiscountAmount > 0 || summary.DiscountPrice > 0) && (
@@ -148,13 +162,13 @@ const Cart = () => {
                                                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" /></svg>
                                                 Discount
                                             </span>
-                                            <span className="font-bold">- ₹ {summary.DiscountAmount || summary.DiscountPrice}</span>
+                                            <span className="font-bold">- ₹ {formatPrice(summary.DiscountAmount || summary.DiscountPrice)}</span>
                                         </div>
                                     )}
 
                                     <div className="pt-4 flex justify-between items-center">
                                         <span className="text-xl font-bold text-gray-900">Total</span>
-                                        <span className="text-xl font-bold text-punya-orange tracking-tight">₹ {summary.Total || summary.GrandTotal}</span>
+                                        <span className="text-xl font-bold text-punya-orange tracking-tight">₹ {formatPrice(summary.Total || summary.GrandTotal)}</span>
                                     </div>
 
                                     <div className="mt-8 pt-6 border-t border-gray-100 space-y-4">
@@ -191,6 +205,42 @@ const Cart = () => {
                     </div>
                 </div>
             </div>
+
+            {/* Confirmation Modal */}
+            {showModal && selectedItem && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm transition-opacity duration-300">
+                    <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl border border-slate-100 transform scale-100 transition-all duration-300">
+                        <div className="text-center">
+                            <span className="material-icons-outlined text-4xl text-red-500 mb-4 bg-red-50 p-3 rounded-full inline-block">delete_outline</span>
+                            <h3 className="text-lg font-bold text-slate-900 mb-2">Remove Item?</h3>
+                            <p className="text-sm text-slate-500 mb-6">
+                                Are you sure you want to remove <span className="font-semibold text-slate-800">"{selectedItem.title}"</span> from your cart?
+                            </p>
+                        </div>
+                        <div className="flex gap-4">
+                            <button
+                                onClick={() => {
+                                    setShowModal(false);
+                                    setSelectedItem(null);
+                                }}
+                                className="flex-1 py-3 px-4 rounded-xl border border-slate-200 text-slate-700 font-semibold hover:bg-slate-50 transition-colors text-sm"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={async () => {
+                                    setShowModal(false);
+                                    await removeCartItem(selectedItem.productId, selectedItem.packageId);
+                                    setSelectedItem(null);
+                                }}
+                                className="flex-1 py-3 px-4 rounded-xl bg-red-600 hover:bg-red-700 text-white font-semibold shadow-md transition-colors text-sm"
+                            >
+                                Remove
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </main>
     );
 };

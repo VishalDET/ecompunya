@@ -57,7 +57,10 @@ const Login = () => {
 
             // Check for success based on typical API patterns in this project (status_code 100 or result 1)
             if (response.data && (response.data.status_code === 100 || response.data.result === 1)) {
-                login(response.data);
+                const userData = response.data.data 
+                    ? (Array.isArray(response.data.data) ? response.data.data[0] : response.data.data)
+                    : response.data;
+                login(userData);
                 navigate(from, { replace: true });
             } else {
                 setError(response.data?.message || 'Login failed. Please check your credentials.');

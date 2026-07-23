@@ -22,6 +22,7 @@ const ProductDetails = () => {
     const [quantity, setQuantity] = useState(1);
     const [cartError, setCartError] = useState('');
     const [cartSuccess, setCartSuccess] = useState(false);
+    const [animatingWishlist, setAnimatingWishlist] = useState(false);
 
     useEffect(() => {
         const fetchProductData = async () => {
@@ -32,10 +33,8 @@ const ProductDetails = () => {
                 const userType = user?.UserType || 0;
 
                 // GetProductsAndPackagesByProductId equivalent
-                const response = await api.post(`GetProductsAndPackagesByProductId?ProductId=${productId}&UserId=${userId}&UserType=${userType}`, {
-                    ProductId: parseInt(productId),
-                    UserId: userId,
-                    UserType: userType
+                const response = await api.post(`GetProductsAndPackagesByProductId?ProductId=${productId}`, {
+                    ProductId: parseInt(productId)
                 });
 
                 if (response.data?.data && response.data.data.length > 0) {
@@ -55,8 +54,8 @@ const ProductDetails = () => {
                     }
                 }
 
-                // Related products fetch mock - since it's not super clear from .cshtml we'll just fetch a few bestsellers as related
-                const relatedRes = await api.get('GetBestseller?Id=1');
+                // Fetch related products
+                const relatedRes = await api.get(`GetRelatedProduts?ProductId=${productId}`);
                 if (relatedRes.data?.data) {
                     setRelatedProducts(relatedRes.data.data);
                 }
@@ -114,8 +113,8 @@ const ProductDetails = () => {
         getField(product, 'OtherImage2', 'otherImage2'),
         getField(product, 'OtherImage3', 'otherImage3')
     ].filter(Boolean);
-    const price = getField(product, 'Price', 'price') || 0;
-    const salePrice = getField(product, 'SalePrice', 'salePrice') || 0;
+    const price = getField(selectedSize, 'Price', 'price') || getField(product, 'Price', 'price') || 0;
+    const salePrice = getField(selectedSize, 'SalePrice', 'salePrice') || getField(product, 'SalePrice', 'salePrice') || 0;
     const discountPercent = price > 0 ? Math.round(((price - salePrice) / price) * 100) : 0;
 
     return (
@@ -192,7 +191,12 @@ const ProductDetails = () => {
                                                 </h4>
                                                 <div className="flex flex-wrap gap-3">
                                                     <button
-                                                        onClick={() => setSelectedColor(colorCode)}
+                                                        onClick={() => {
+                                                            setSelectedColor(colorCode);
+                                                            if (pkgList.length > 0) {
+                                                                setSelectedSize(pkgList[0]);
+                                                            }
+                                                        }}
                                                         className={`w-6 h-6 rounded-full transition-all duration-200 outline-none ${selectedColor === colorCode
                                                             ? 'ring-2 ring-offset-2 ring-primary shadow-md scale-110'
                                                             : 'ring-1 ring-gray-200 hover:ring-gray-400'
@@ -250,15 +254,26 @@ const ProductDetails = () => {
 
                             {/* Wishlist Button */}
                             <button
-                                onClick={() => toggleWishlist(product)}
-                                className={`w-14 h-14 rounded-full flex items-center justify-center border transition-all duration-300 outline-none flex-shrink-0 ${isInWishlist(product.ProductId)
-                                    ? 'bg-red-50 border-red-200 text-red-500 hover:bg-red-100 shadow-sm'
-                                    : 'bg-white border-gray-300 text-gray-400 hover:text-red-500 hover:border-red-200 hover:bg-red-50'
+                                onClick={async () => {
+                                    setAnimatingWishlist(true);
+                                    setTimeout(() => setAnimatingWishlist(false), 300);
+                                    await toggleWishlist({
+                                        ...product,
+                                        PackageId: selectedSize?.Id || selectedSize?.id || 0,
+                                        Color: selectedSize?.ColorText || selectedSize?.colorText || '',
+                                        Size: selectedSize?.SizeText || selectedSize?.sizeText || ''
+                                    });
+                                }}
+                                className={`w-14 h-14 rounded-full flex items-center justify-center border outline-none flex-shrink-0 transition-all duration-300 transform active:scale-90
+                                    ${animatingWishlist ? 'scale-125' : 'scale-100'} 
+                                    ${isInWishlist(product.ProductId || product.productId)
+                                        ? 'bg-red-50 border-red-200 text-red-500 hover:bg-red-100 shadow-sm'
+                                        : 'bg-white border-gray-300 text-gray-400 hover:text-red-500 hover:border-red-200 hover:bg-red-50'
                                     }`}
-                                title={isInWishlist(product.ProductId) ? "Remove from Wishlist" : "Add to Wishlist"}
+                                title={isInWishlist(product.ProductId || product.productId) ? "Remove from Wishlist" : "Add to Wishlist"}
                             >
-                                <span className={`material-icons-outlined text-2xl ${isInWishlist(product.ProductId) ? 'material-icons' : ''}`}>
-                                    {isInWishlist(product.ProductId) ? 'favorite' : 'favorite_border'}
+                                <span className={`material-icons-outlined text-2xl transition-transform duration-300 ${animatingWishlist ? 'scale-125' : 'scale-100'} ${isInWishlist(product.ProductId || product.productId) ? 'material-icons' : ''}`}>
+                                    {isInWishlist(product.ProductId || product.productId) ? 'favorite' : 'favorite_border'}
                                 </span>
                             </button>
 

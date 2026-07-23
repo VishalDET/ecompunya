@@ -1,5 +1,6 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import React, { createContext, useState, useContext, useEffect, useCallback } from 'react';
 import { useAuth } from './AuthContext';
+import api from '../api/axiosConfig';
 
 const WishlistContext = createContext();
 
@@ -9,76 +10,136 @@ export const WishlistProvider = ({ children }) => {
     const { user } = useAuth();
     const [wishlistItems, setWishlistItems] = useState([]);
 
-    // We'll primarily use localStorage for the wishlist since the .NET API endpoints
-    // for wishlist weren't fully identified in the previous implementation,
-    // but this structure allows easy swapping to API calls later if defined.
-
-    const storageKey = user ? `kkds_wishlist_${user.Id}` : 'kkds_guest_wishlist';
-
-    // Load wishlist
-    useEffect(() => {
-        const stored = localStorage.getItem(storageKey);
-        if (stored) {
-            setWishlistItems(JSON.parse(stored));
-        } else {
-            setWishlistItems([]);
-        }
-    }, [storageKey]);
-
-    // Sync guest wishlist to user wishlist on login
-    useEffect(() => {
+    const loadWishlist = useCallback(async () => {
         if (user) {
-            const guestWishlist = JSON.parse(localStorage.getItem('kkds_guest_wishlist')) || [];
-            if (guestWishlist.length > 0) {
-                const userKey = `kkds_wishlist_${user.Id}`;
-                const userWishlist = JSON.parse(localStorage.getItem(userKey)) || [];
-
-                // Merge avoiding duplicates
-                const merged = [...userWishlist];
-                guestWishlist.forEach(item => {
-                    if (!merged.some(m => m.ProductId === item.ProductId)) {
-                        merged.push(item);
-                    }
-                });
-
-                localStorage.setItem(userKey, JSON.stringify(merged));
-                setWishlistItems(merged);
-                localStorage.removeItem('kkds_guest_wishlist');
+            try {
+                const response = await api.post(`GetWishlistProduct?UserId=${user.Id || user.id}`);
+                if (response.data?.status_code === 100 && response.data.data) {
+                    setWishlistItems(response.data.data);
+                } else {
+                    setWishlistItems([]);
+                }
+            } catch (error) {
+                console.error("Failed to load wishlist", error);
+            }
+        } else {
+            const stored = localStorage.getItem('kkds_guest_wishlist');
+            if (stored) {
+                setWishlistItems(JSON.parse(stored));
+            } else {
+                setWishlistItems([]);
             }
         }
     }, [user]);
 
-    const toggleWishlist = (product) => {
-        let current = [...wishlistItems];
-        const existingIndex = current.findIndex(item => item.ProductId === product.ProductId);
+    // Load wishlist on mount or user change
+    useEffect(() => {
+        loadWishlist();
+    }, [loadWishlist]);
 
-        if (existingIndex > -1) {
-            current.splice(existingIndex, 1);
+    // Sync guest wishlist to user wishlist on login
+    useEffect(() => {
+        const syncGuestWishlist = async () => {
+            if (user) {
+                const guestWishlist = JSON.parse(localStorage.getItem('kkds_guest_wishlist')) || [];
+                if (guestWishlist.length > 0) {
+                    for (const item of guestWishlist) {
+                        try {
+                            await api.post('AddToWishlist', {
+                                isApp: 0,
+                                userId: user.Id || user.id || 0,
+                                productId: item.ProductId,
+                                quantity: 1,
+                                packageId: item.PackageId || 0,
+                                price: item.Price || 0,
+                                salePrice: item.SalePrice || 0,
+                                color: item.Color || '',
+                                size: item.Size || ''
+                            });
+                        } catch (err) {
+                            console.error("Failed to sync guest wishlist item", err);
+                        }
+                    }
+                    localStorage.removeItem('kkds_guest_wishlist');
+                    loadWishlist();
+                }
+            }
+        };
+        syncGuestWishlist();
+    }, [user, loadWishlist]);
+
+    const toggleWishlist = async (product) => {
+        const prodId = product.ProductId || product.productId;
+        const pkgId = product.PackageId || product.packageId || 0;
+
+        if (user) {
+            const exists = wishlistItems.some(item => Number(item.ProductId || item.productId) === Number(prodId));
+            if (exists) {
+                await api.post('RemoveWishlistProduct', {
+                    userId: user.Id || user.id || 0,
+                    productId: prodId,
+                    packageId: pkgId
+                });
+            } else {
+                await api.post('AddToWishlist', {
+                    isApp: 0,
+                    userId: user.Id || user.id || 0,
+                    productId: prodId,
+                    quantity: 1,
+                    packageId: pkgId,
+                    price: product.Price || product.price || 0,
+                    salePrice: product.SalePrice || product.salePrice || 0,
+                    color: product.Color || product.color || '',
+                    size: product.Size || product.size || ''
+                });
+            }
+            await loadWishlist();
+            return !exists;
         } else {
-            current.push({
-                ProductId: product.ProductId,
-                ProductTitle: product.ProductTitle,
-                MainImage: product.MainImage,
-                Price: product.Price,
-                SalePrice: product.SalePrice,
-                DiscountPercent: product.Price > 0 ? Math.round(((product.Price - product.SalePrice) / product.Price) * 100) : 0,
-                // store default package/size info if needed later
-            });
-        }
+            const guestWishlist = JSON.parse(localStorage.getItem('kkds_guest_wishlist')) || [];
+            const existingIndex = guestWishlist.findIndex(item => Number(item.ProductId) === Number(prodId));
+            let updated = [...guestWishlist];
 
-        setWishlistItems(current);
-        localStorage.setItem(storageKey, JSON.stringify(current));
-        return existingIndex === -1; // returns true if added, false if removed
+            if (existingIndex > -1) {
+                updated.splice(existingIndex, 1);
+            } else {
+                updated.push({
+                    ProductId: prodId,
+                    ProductTitle: product.ProductTitle || product.productTitle,
+                    MainImage: product.MainImage || product.mainImage,
+                    Price: product.Price || product.price || 0,
+                    SalePrice: product.SalePrice || product.salePrice || 0,
+                    DiscountPercent: product.Price > 0 ? Math.round(((product.Price - product.SalePrice) / product.Price) * 100) : 0,
+                    Color: product.Color || product.color || '',
+                    Size: product.Size || product.size || '',
+                    PackageId: pkgId
+                });
+            }
+
+            localStorage.setItem('kkds_guest_wishlist', JSON.stringify(updated));
+            setWishlistItems(updated);
+            return existingIndex === -1;
+        }
     };
 
-    const removeFromWishlist = (productId) => {
-        const current = wishlistItems.filter(item => item.ProductId !== productId);
-        setWishlistItems(current);
-        localStorage.setItem(storageKey, JSON.stringify(current));
+    const removeFromWishlist = async (productId, packageId = 0) => {
+        if (user) {
+            await api.post('RemoveWishlistProduct', {
+                userId: user.Id || user.id || 0,
+                productId: productId,
+                packageId: packageId
+            });
+            await loadWishlist();
+        } else {
+            const guestWishlist = JSON.parse(localStorage.getItem('kkds_guest_wishlist')) || [];
+            const filtered = guestWishlist.filter(item => Number(item.ProductId) !== Number(productId));
+            localStorage.setItem('kkds_guest_wishlist', JSON.stringify(filtered));
+            setWishlistItems(filtered);
+        }
     };
 
     const isInWishlist = (productId) => {
-        return wishlistItems.some(item => item.ProductId === productId);
+        return wishlistItems.some(item => Number(item.ProductId || item.productId) === Number(productId));
     };
 
     const value = {
@@ -86,7 +147,8 @@ export const WishlistProvider = ({ children }) => {
         wishlistCount: wishlistItems.length,
         toggleWishlist,
         removeFromWishlist,
-        isInWishlist
+        isInWishlist,
+        loadWishlist
     };
 
     return (

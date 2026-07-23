@@ -2,12 +2,14 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { useParams, useSearchParams, Link } from 'react-router-dom';
 import api from '../api/axiosConfig';
 import { useAuth } from '../context/AuthContext';
+import { useWishlist } from '../context/WishlistContext';
 import Loader from '../components/common/Loader';
 
 const ProductList = () => {
     const { categoryId } = useParams();
     const [searchParams, setSearchParams] = useSearchParams();
     const { user } = useAuth();
+    const { toggleWishlist, isInWishlist } = useWishlist();
 
     // Data states
     const [products, setProducts] = useState([]);
@@ -30,10 +32,10 @@ const ProductList = () => {
         setLoading(true); // Set loading to true before fetching
         try {
             const userType = user?.UserType || 0;
-            const colorStr = selectedColors.join(',');
-            const sizeStr = selectedSizes.join(',');
+            const colorStr = selectedColors.map(c => `'${c}'`).join(',');
+            const sizeStr = selectedSizes.map(s => `'${s}'`).join(',');
             // The old code sends categoryId, colors, sizes, priceMin, priceMax, UserType
-            const url = `GetFilterProducts?categoryId=${categoryId}&colors=${colorStr}&sizes=${sizeStr}&priceMin=${priceMin}&priceMax=${priceMax}&productTitle=&UserType=${userType}`;
+            const url = `GetFilterProducts?categoryId=${categoryId}&colors=${encodeURIComponent(colorStr)}&sizes=${encodeURIComponent(sizeStr)}&priceMin=${priceMin}&priceMax=${priceMax}&productTitle=&UserType=${userType}`;
 
             const response = await api.get(url);
             if (response.data && response.data.status_code === 100) {
@@ -158,14 +160,14 @@ const ProductList = () => {
                             <h3 className="text-sm font-bold uppercase tracking-wider mb-4 border-b border-slate-100 pb-2 text-slate-900">Color</h3>
                             <div className="space-y-2 max-h-48 overflow-y-auto custom-scrollbar pr-2">
                                 {colors.map(color => (
-                                    <label key={color.ProductId} className="flex items-center group cursor-pointer">
+                                    <label key={color.ProductId || color.Color} className="flex items-center group cursor-pointer">
                                         <input
                                             type="checkbox"
                                             className="rounded text-primary focus:ring-primary h-4 w-4 border-slate-300 bg-white transition-colors"
-                                            checked={selectedColors.includes(color.ProductId)}
-                                            onChange={() => handleColorToggle(color.ProductId)}
+                                            checked={selectedColors.includes(color.Color)}
+                                            onChange={() => handleColorToggle(color.Color)}
                                         />
-                                        <span className={`ml-3 text-sm group-hover:text-primary transition-colors ${selectedColors.includes(color.ProductId) ? 'text-primary font-medium' : 'text-slate-600'} `}>
+                                        <span className={`ml-3 text-sm group-hover:text-primary transition-colors ${selectedColors.includes(color.Color) ? 'text-primary font-medium' : 'text-slate-600'} `}>
                                             {color.Color}
                                         </span>
                                     </label>
@@ -178,14 +180,14 @@ const ProductList = () => {
                             <h3 className="text-sm font-bold uppercase tracking-wider mb-4 border-b border-slate-100 pb-2 text-slate-900">Sizes</h3>
                             <div className="space-y-2 max-h-48 overflow-y-auto custom-scrollbar pr-2">
                                 {sizes.map(size => (
-                                    <label key={size.Id} className="flex items-center group cursor-pointer">
+                                    <label key={size.Id || size.Size} className="flex items-center group cursor-pointer">
                                         <input
                                             type="checkbox"
                                             className="rounded text-primary focus:ring-primary h-4 w-4 border-slate-300 bg-white transition-colors"
-                                            checked={selectedSizes.includes(size.Id)}
-                                            onChange={() => handleSizeToggle(size.Id)}
+                                            checked={selectedSizes.includes(size.Size)}
+                                            onChange={() => handleSizeToggle(size.Size)}
                                         />
-                                        <span className={`ml-3 text-sm group-hover:text-primary transition-colors ${selectedSizes.includes(size.Id) ? 'text-primary font-medium' : 'text-slate-600'} `}>
+                                        <span className={`ml-3 text-sm group-hover:text-primary transition-colors ${selectedSizes.includes(size.Size) ? 'text-primary font-medium' : 'text-slate-600'} `}>
                                             {size.Size}
                                         </span>
                                     </label>
@@ -229,8 +231,18 @@ const ProductList = () => {
                                                     </div>
                                                 )}
 
-                                                <button className="absolute top-4 right-4 h-10 w-10 flex items-center justify-center rounded-full bg-white/90 text-slate-900 hover:text-red-500 transition-colors shadow-sm">
-                                                    <span className="material-icons-outlined text-lg">favorite_border</span>
+                                                <button
+                                                    onClick={() => toggleWishlist(product)}
+                                                    className={`absolute top-4 right-4 h-10 w-10 flex items-center justify-center rounded-full transition-colors shadow-sm outline-none
+                                                        ${isInWishlist(product.ProductId || product.productId)
+                                                            ? 'bg-red-50 text-red-500 hover:bg-red-100'
+                                                            : 'bg-white/90 text-slate-900 hover:text-red-500'
+                                                        }`}
+                                                    title={isInWishlist(product.ProductId || product.productId) ? "Remove from Wishlist" : "Add to Wishlist"}
+                                                >
+                                                    <span className={`material-icons-outlined text-lg ${isInWishlist(product.ProductId || product.productId) ? 'material-icons' : ''}`}>
+                                                        {isInWishlist(product.ProductId || product.productId) ? 'favorite' : 'favorite_border'}
+                                                    </span>
                                                 </button>
 
                                                 <div className="quick-add absolute inset-x-4 bottom-6 opacity-0 transform translate-y-4 transition-all duration-300">

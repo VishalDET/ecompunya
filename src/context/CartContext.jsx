@@ -17,13 +17,12 @@ export const CartProvider = ({ children }) => {
         setLoading(true);
         try {
             if (user) {
-                // Fetch from API
-                const response = await api.get(`CartProduct?UserId=${user.Id}`);
+                const response = await api.post(`GetCartProduct?UserId=${user.Id}`);
                 if (response.data?.status_code === 100 && response.data.data) {
                     const data = response.data.data;
                     if (data.length > 0) {
-                        const items = data.slice(0, data.length - 1);
-                        const summary = data[data.length - 1];
+                        const items = data.filter(item => item.ItemType !== 'totalsum');
+                        const summary = data.find(item => item.ItemType === 'totalsum') || null;
                         setCartItems(items);
                         setCartSummary(summary);
 
@@ -79,13 +78,15 @@ export const CartProvider = ({ children }) => {
                     for (const item of localCart) {
                         try {
                             await api.post('AddToCart', {
-                                IsApp: 0,
-                                UserId: user.Id,
-                                ProductId: item.ProductId,
-                                Quantity: item.Quantity,
-                                PackageId: item.PackageId,
-                                Price: item.Price,
-                                SalePrice: item.SalePrice
+                                isApp: 0,
+                                userId: user.Id || user.id || 0,
+                                productId: item.ProductId,
+                                quantity: item.Quantity,
+                                packageId: item.PackageId,
+                                price: item.Price,
+                                salePrice: item.SalePrice,
+                                color: item.Color || '',
+                                size: item.Size || ''
                             });
                         } catch (err) {
                             console.error("Failed to sync local cart item", err);
@@ -106,16 +107,18 @@ export const CartProvider = ({ children }) => {
 
         if (user) {
             const requestData = {
-                IsApp: 0,
-                UserId: user.Id,
-                ProductId: productData.ProductId || productData.productId,
-                Quantity: quantity,
-                PackageId: packageId,
-                Price: price,
-                SalePrice: salePrice
+                isApp: 0,
+                userId: user.Id || user.id || 0,
+                productId: productData.ProductId || productData.productId,
+                quantity: quantity,
+                packageId: packageId,
+                price: price,
+                salePrice: salePrice,
+                color: selectedSize.ColorText || selectedSize.colorText || '',
+                size: selectedSize.SizeText || selectedSize.sizeText || ''
             };
             const response = await api.post('AddToCart', requestData);
-            if (response.status === 200) {
+            if (response.status === 200 || response.data?.status_code === 100) {
                 await loadCart();
                 return true;
             }
@@ -149,14 +152,17 @@ export const CartProvider = ({ children }) => {
     const updateQuantity = async (productId, packageId, salePrice, currentQty, change) => {
         const newQty = Math.max(1, currentQty + change);
         if (user) {
+            const item = cartItems.find(i => (i.ProductId === productId || i.productId === productId) && (i.PackageId === packageId || i.packageId === packageId));
             const requestData = {
-                IsApp: 0,
-                UserId: user.Id,
-                ProductId: productId,
-                Quantity: newQty,
-                PackageId: packageId,
-                Price: salePrice,
-                SalePrice: salePrice
+                isApp: 0,
+                userId: user.Id || user.id || 0,
+                productId: productId,
+                quantity: newQty,
+                packageId: packageId,
+                price: item?.Price || item?.price || salePrice,
+                salePrice: salePrice,
+                color: item?.Color || item?.color || '',
+                size: item?.Size || item?.size || ''
             };
             await api.post('AddToCart', requestData);
             await loadCart();
@@ -173,10 +179,10 @@ export const CartProvider = ({ children }) => {
 
     const removeCartItem = async (productId, packageId) => {
         if (user) {
-            await api.post('RemoveProduct', {
-                UserId: user.Id,
-                ProductId: productId,
-                PackageId: packageId
+            await api.post('RemoveCartProduct', {
+                userId: user.Id || user.id || 0,
+                productId: productId,
+                packageId: packageId
             });
             await loadCart();
         } else {

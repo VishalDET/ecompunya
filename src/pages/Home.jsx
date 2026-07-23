@@ -124,7 +124,18 @@ const Home = () => {
                 </div>
             </section>
 
-            {/* ── Sub-Category Grids (one per main category) ─────────────────── */}
+            {/* Breaker Banner */}
+            <section className="w-full bg-white py-6">
+                <div className="w-full overflow-hidden">
+                    <img
+                        src="/assets/img/banners/breaker.jpg"
+                        alt="Promotion Banner"
+                        className="w-full h-auto object-cover max-h-[400px]"
+                    />
+                </div>
+            </section>
+
+            {/* ── Sub-Category Grids (one per main category) ─────────────────── 
             {categories.map((cat, i) => {
                 const isWomens = /women/i.test(cat.main_category_name);
                 return (
@@ -143,7 +154,7 @@ const Home = () => {
                             <div className="space-y-14">
                                 {cat.sub_categories.map(sub => (
                                     <div key={sub.sub_category_id}>
-                                        {/* Sub-category header */}
+                                        {/* Sub-category header 
                                         <div className="flex items-center gap-4 mb-6">
                                             <h3 className="font-display text-xl font-bold text-slate-900 whitespace-nowrap">
                                                 {sub.sub_category_name.replace(/-MEN|-WOMEN/i, '').trim()}
@@ -157,7 +168,7 @@ const Home = () => {
                                             </Link>
                                         </div>
 
-                                        {/* Child category cards */}
+                                        {/* Child category cards 
                                         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                                             {sub.child_category.map(child => {
                                                 const imgSrc = child.child_category_image_url || sub.sub_category_image_url || cat.main_category_image_url;
@@ -188,7 +199,7 @@ const Home = () => {
                         </div>
                     </section>
                 );
-            })}
+            })}*/}
 
             {/* ── Bestsellers ─────────────────────────────────────────────────── */}
             <section className="bg-white">

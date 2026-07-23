@@ -7,6 +7,11 @@ const Wishlist = () => {
     const { wishlistItems, removeFromWishlist } = useWishlist();
     const { addToCart } = useCart();
 
+    const formatPrice = (value) => {
+        const num = parseFloat(value);
+        return isNaN(num) ? '0.00' : num.toFixed(2);
+    };
+
     const handleMoveToCart = async (item) => {
         // Move requires a default size - in this case since wishlist might save just product level, 
         // we'll attempt to send it to the details page if size is needed, or just add if we had a default package.
@@ -22,44 +27,54 @@ const Wishlist = () => {
 
                 {wishlistItems.length > 0 ? (
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                        {wishlistItems.map(item => (
-                            <div key={item.ProductId} className="bg-none rounded-2xl shadow-sm border border-gray-100 overflow-hidden group">
-                                <div className="relative aspect-[3/4] bg-gray-50 flex items-center justify-center p-4">
-                                    <Link to={`/product/${item.ProductId}`} className="block w-full h-full">
-                                        <img src={item.MainImage} alt={item.ProductTitle} className="w-full h-full object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-500" />
-                                    </Link>
-                                    <button
-                                        onClick={() => removeFromWishlist(item.ProductId)}
-                                        className="absolute top-3 right-3 w-8 h-8 bg-white/90 rounded-full flex items-center justify-center text-gray-400 hover:text-red-500 shadow-sm transition-colors"
-                                        title="Remove from wishlist"
-                                    >
-                                        <span className="material-icons-outlined text-sm">close</span>
-                                    </button>
-                                </div>
-                                <div className="p-4">
-                                    <h3 className="text-sm font-bold text-gray-900 line-clamp-2 mb-2">
-                                        <Link to={`/product/${item.ProductId}`} className="hover:text-primary transition-colors">
-                                            {item.ProductTitle}
+                        {wishlistItems.map(item => {
+                            const productId = item.ProductId || item.productId;
+                            const title = item.ProductTitle || item.productTitle;
+                            const mainImage = item.MainImage || item.mainImage;
+                            const price = item.Price || item.price || 0;
+                            const salePrice = item.SalePrice || item.salePrice || 0;
+                            const discountPercent = item.DiscountPercent || item.discountPercent || 0;
+                            const packageId = item.PackageId || item.packageId || 0;
+
+                            return (
+                                <div key={productId} className="bg-none rounded-2xl shadow-sm border border-gray-100 overflow-hidden group">
+                                    <div className="relative aspect-[3/4] bg-gray-50 flex items-center justify-center p-4">
+                                        <Link to={`/product/${productId}`} className="block w-full h-full">
+                                            <img src={mainImage} alt={title} className="w-full h-full object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-500" />
                                         </Link>
-                                    </h3>
-                                    <div className="flex items-center gap-2 mb-4">
-                                        <span className="text-lg font-bold text-primary">₹{item.SalePrice}</span>
-                                        {item.Price > item.SalePrice && (
-                                            <span className="text-xs text-gray-400 line-through">₹{item.Price}</span>
-                                        )}
-                                        {item.DiscountPercent > 0 && (
-                                            <span className="text-xs font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded">{item.DiscountPercent}% OFF</span>
-                                        )}
+                                        <button
+                                            onClick={() => removeFromWishlist(productId, packageId)}
+                                            className="absolute top-3 right-3 w-8 h-8 bg-white/90 rounded-full flex items-center justify-center text-gray-400 hover:text-red-500 shadow-sm transition-colors"
+                                            title="Remove from wishlist"
+                                        >
+                                            <span className="material-icons-outlined text-sm">close</span>
+                                        </button>
                                     </div>
-                                    <Link
-                                        to={`/product/${item.ProductId}`}
-                                        className="w-full block text-center border border-primary text-primary hover:bg-primary hover:text-white py-2 rounded-lg text-sm font-bold transition-colors"
-                                    >
-                                        SELECT SIZE
-                                    </Link>
+                                    <div className="p-4">
+                                        <h3 className="text-sm font-bold text-gray-900 line-clamp-2 mb-2">
+                                            <Link to={`/product/${productId}`} className="hover:text-primary transition-colors">
+                                                {title}
+                                            </Link>
+                                        </h3>
+                                        <div className="flex items-center gap-2 mb-4">
+                                            <span className="text-lg font-bold text-primary">₹{formatPrice(salePrice)}</span>
+                                            {price > salePrice && (
+                                                <span className="text-xs text-gray-400 line-through">₹{formatPrice(price)}</span>
+                                            )}
+                                            {discountPercent > 0 && (
+                                                <span className="text-xs font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded">{discountPercent}% OFF</span>
+                                            )}
+                                        </div>
+                                        <Link
+                                            to={`/product/${productId}`}
+                                            className="w-full block text-center border border-primary text-primary hover:bg-primary hover:text-white py-2 rounded-lg text-sm font-bold transition-colors"
+                                        >
+                                            SELECT SIZE
+                                        </Link>
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
+                            );
+                        })}
                     </div>
                 ) : (
                     <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-12 text-center flex flex-col items-center">
